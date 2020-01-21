@@ -1,0 +1,54 @@
+---
+title: "Data Science North East / R North East User Group"
+author: "Matt Forshaw"
+date: "21/01/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=TRUE, eval=FALSE}
+library(tidyverse)
+library(obscure_library)
+library(another_rare_library)
+library(esoteRic_package)
+
+# Pre-processing step
+# ----
+data <- data %>% 
+  filter(Variable == "Temperature") %>% 
+  celsius_to_f(Value)
+
+# Data loading
+# ----
+data <- read_csv("/Users/matthewforshaw/Desktop/data.csv")
+data
+
+# Plot time series of temperature at Newcastle Business School
+# ----
+p1 <- ggplot(data, aes(x = Timestamp,
+                 y = Value)) + 
+  geom_line() +
+  theme_bw() + 
+  labs(title = "Temperature at Newcastle Business School",
+       subtitle = paste0("Data obtained from PER_EMOTE_2204 in the 24 hours to ",
+                         max(data$Timestamp)),
+       x = "Time",
+       y = "Temperature (Fahrenheit)")
+
+p1
+ggsave("/Users/matthewforshaw/tempdir/my_cool_plot.png", p1)
+
+
+#' Convert column from celsius to fahrenheit
+celsius_to_f <- function(df, var) {
+  # Tidy evaluation is cool! Read more here: https://tidyeval.tidyverse.org/
+  var = enquo(var)
+  # Emulate a long-running pre-processing or 'munging' step.
+  Sys.sleep(2)
+  # Convert from Celsius to Fahrenheit
+  mutate(df, !!var := 32 + 0.8*!!var)
+  
+}
+
+```
